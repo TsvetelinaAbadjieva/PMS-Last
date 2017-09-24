@@ -1,0 +1,54 @@
+<template>
+
+    <div class="container" id="container">
+
+      <form class="form-signin" id="registerForm">
+        <h1>Registration Page</h1>
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+    </div>
+
+</template>
+<script>
+    (function(){
+
+        var template = document.currentScript.ownerDocument.querySelector('template');
+        var proto = Object.create(HTMLElement.prototype);
+
+        proto.createdCallback = function(){
+
+            var clone = document.importNode(template.content, true);
+            this.createShadowRoot().appendChild(clone);
+            this.$container = this.shadowRoot.querySelector('#container');
+            this.$form = this.shadowRoot.querySelector('#registerForm');
+            this.$h1 = this.shadowRoot.querySelector('h1');
+            this.draw();
+            console.log('Incomponent')
+
+        };
+        proto.draw = function() {
+            this.$h1.innerHtml = 'Hello from component'; 
+        };
+        proto.attachedCallback = function() {
+
+        };
+
+        proto.attributeChangedCallback = function() {
+
+        };
+        
+        document.registerElement('register-form', {prototype: proto});
+    }())
+
+</script>
