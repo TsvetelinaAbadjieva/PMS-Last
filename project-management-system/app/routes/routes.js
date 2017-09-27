@@ -239,6 +239,21 @@ app.post('/project/users', ensureToken, function (req, res, next) {
   });
 });
 
+//get sections for project
+app.post('/project/sections',  function (req, res) {
+  console.log('In request');
+
+  fc.getSectionCollectionByProject(res, req.body.projectId, function (res, error, data) {
+    if (error) {
+      res.json({ status: 400, message: 'Data could not be retrieved' })
+    }
+    console.log(data);
+
+    res.json({ status: 200, message: 'Data retrieved', data: data });
+  });
+});
+
+
 app.post('/task/details',  function (req, res) {
   var task = {
     taskId: req.body.taskId,
@@ -250,6 +265,46 @@ app.post('/task/details',  function (req, res) {
     console.log(data[0]);
 
     res.json({ status: 200, message: 'Data retrieved', data: data[0] });
+  });
+});
+
+app.post('/task/update', ensureToken, function (req, res, next) {
+  console.log('In request');
+  // req.body.id = 51;
+  jwt.verify(req.token, 'someSecretKey', function (err, req) {
+    if (err) {
+      res.sendStatus(403);
+      res.message('Operation Impossible!')
+    }
+  });
+  //  var decodedToken = jwt.decode(req.token);
+  //  console.log(decodedToken);
+  fc.updateTask(res, req.body, function (res, error, result) {
+    if (error) {
+      res.json({ status: 400, message: 'Data could not be retrieved' })
+    }
+
+    res.json({ status: 200, message: 'Data updated!' });
+  });
+});
+
+// move task from one section to another
+app.post('/section/move', ensureToken, function (req, res, next) {
+  console.log('In request');
+  // req.body.id = 51;
+  jwt.verify(req.token, 'someSecretKey', function (err, req) {
+    if (err) {
+      res.sendStatus(403);
+      res.message('Operation Impossible!')
+    }
+  });
+
+  fc.moveToSection(res, req.body, function (res, error, result) {
+    if (error) {
+      res.json({ status: 400, message: 'Data could not be retrieved' })
+    }
+
+    res.json({ status: 200, message: 'Data updated!' });
   });
 });
 

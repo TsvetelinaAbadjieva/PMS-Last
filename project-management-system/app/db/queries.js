@@ -78,6 +78,29 @@ exports.insertComment = function (comment, func) {
         func(err, result.affectedRows);
     });
 };
+
+exports.updateTask = function (res, taskObj, func) {
+
+    var tu = [];
+    for (var key in taskObj) {
+      if(taskObj[key] != null && key != 'id') {
+        tu.push( {key: key, value: taskObj[key]});
+      }
+    }
+    //INSERT INTO `user` (`name`) VALUES ('John');
+    var sql = "UPDATE task SET ";
+    sql += tu.map(function(item, index) {
+      return [item.key , item.value].join("='");
+    }).join("', ");
+    sql+= "'  WHERE id = ?";
+//console.log(sql);
+    con.query(sql, [taskObj.id], function (err, result) {
+        if (err) throw err;
+        console.log("Number of records inserted: " + result.affectedRows);
+        func(res, err, result.affectedRows);
+    });
+};
+
 exports.insertProject = function (project, func) {
 
     var tu = [];
@@ -229,6 +252,7 @@ exports.getUserCollection = function (func) {
     });
 };
 
+
 //get all sections with their tasks for one project and user
 exports.getSectionTaskCollection = function (res, projectId, func) {
 
@@ -278,11 +302,10 @@ exports.getSectionCollection = function (res, func) {
 //get all sections for selected project
 exports.getSectionCollectionByProject = function (res, projectId, func) {
 
-    var sql = "SELECT section.id, section.section" +
-        "FROM project_management_system.section, project_management_system.project" +
-        " WHERE section.project_id = project.id AND project.id =?";
+    var sql = "SELECT DISTINCT * " +
+        " FROM project_management_system.section " +
+        " WHERE section.project_id = ?";
     var resultCollection = [];
-    console.log(id);
     con.query(sql, [parseInt(projectId)], function (err, result) {
 
         if (err) throw err;
@@ -346,6 +369,18 @@ exports.getUserByProjectCollection = function (projectId, func) {
         console.log(err, result);
         func(err, user);
     });
+};
+
+exports.moveToSection = function(res, obj, func) {
+
+    var sql = "UPDATE task SET section_id = ? WHERE id = ?";
+        con.query(sql, [obj.sectionId, obj.taskId], function (err, result) {
+
+        if (err) throw err;
+        console.log(result);
+        func(res, err, result.affectedRows);
+    });
+
 };
 
 exports.assignToProject = function (userProject, func) {
@@ -505,4 +540,5 @@ var project = {
     pr_due_date: '2017-12-31'
 };
 
-//exports.getProjectCollectionByUser(null, 15, null);
+// var taskObj = {'id':'1' ,'user':'2', 'description':'3'}
+// exports.updateTask(taskObj, null);

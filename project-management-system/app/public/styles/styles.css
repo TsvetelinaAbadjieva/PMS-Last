@@ -17,8 +17,8 @@
     margin-right:10px;
     margin-top:5px;
     margin-left:0px;
-
 }
+
 .projectBoard{
   background-image:  url("http://skillstechindia.com/images/project-management.jpg");
 }
@@ -35,6 +35,19 @@
     float: right;
 
 }
+.taskMove {
+    background-color:#163d77;
+    height: 30px;
+    color: white;
+    border-radius: 3px;
+    float: right;
+}
+
+.select {
+    border-radius: 3px;
+    float: right;
+}
+
 .btn{
   margin:5px;
 }

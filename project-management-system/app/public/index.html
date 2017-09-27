@@ -182,7 +182,7 @@
         <h3 id="project_title_head">Project name</h3>
         <div id="project_board" class="projectBoard">
 
-            <div class="section-container" id="sectionDefaultPrim" style="background: url('')">
+            <div class="section-container" id="sectionDefaultPrim" style="background: url('')" ondrop="drop(event)" ondragover="allowDrop(event)">
 
                 <ul class="section" id="tasksPrim">
                     <!--template for one section-start-->
@@ -192,7 +192,7 @@
                     <li>
                         <hr style="width: 20rem; float:left;"><br>
                     </li>
-                    <li id="cardDefaultPrim">
+                    <li id="cardDefaultPrim" draggable="true" ondragstart="drag(event)">
                         <div class="card" style="width: 20rem;">
                             <div class="card">
                                 <label id="btnStatusPrim"  class="btn  taskStatus" style=" width: 20rem; float:left;">Status</label>
@@ -239,6 +239,9 @@
                     <label for="">Title</label> <button for="" id="btnTaskStatus" class="btn taskStatus">Status</button>
                     <h4 class="modal-title" id="task">Task title</h4>
                     <label for="">Description</label>
+                    <button for="" id="btnTaskMove" class="btn taskMove">Move</button>
+                    <select for="" id="btnSecMove" name="btnSecMove" class="btn select" style="display:none">Move
+                    </select>
                     <h4 class="modal-title" id="description" contenteditable="true">Description</h5>
                     <label for="">Due date</label>
                     <h5 id="dueDate">Due date</h5>
@@ -246,10 +249,9 @@
                     <h5 id="responsible">Responsible</h5>
                     <div  id="editTaskArea" style="display:none">
                         <label for="">Attach another responsible to this task</label>
-                        <span id="respInsert">Span</span>
                         <select class="form-group" name="responsible" id="responsibleUserChange">
                         </select>
-                            <button type="button" class="btn btn-primary" id="add_user">Add</button>
+                            <button type="button" class="btn btn-primary" id="addChanges">Add</button>
                         <p>
                             <label for="">Due date</label>
                             <input type="date" id="newDueDate">
@@ -267,6 +269,9 @@
 
                         <button type="button" id="editTask" class="btn btn-primary">Edit</button>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div id="alertUpdateTask" class="alert alert-success" role="alert" style="margin-right: 30px; display:none">
+                        </div>
+
                 </div>
                 <div class="modal-body">
                     <form>

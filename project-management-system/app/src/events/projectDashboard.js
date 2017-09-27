@@ -365,14 +365,14 @@ function drawTaskBody(taskId, sectionId, projectId, section, taskTitle, taskStat
   var taskTemplate = null;
   var flag = 0;
 
-   if(sectionId == 0){
-      taskTemplate = _document.querySelector('#sectionDefault').querySelector('#cardDefault');
-      flag = 0;
-   }
-   else {
-    taskTemplate = _document.querySelector('#section_id_'+ sectionId).querySelector('#cardDefault');
-    flag =1;
-   }
+  if (sectionId == 0) {
+    taskTemplate = _document.querySelector('#sectionDefault').querySelector('#cardDefault');
+    flag = 0;
+  }
+  else {
+    taskTemplate = _document.querySelector('#section_id_' + sectionId).querySelector('#cardDefault');
+    flag = 1;
+  }
   console.log(taskTemplate)
 
   var newTask = _document.createElement('li');
@@ -381,7 +381,7 @@ function drawTaskBody(taskId, sectionId, projectId, section, taskTitle, taskStat
     newTask.setAttribute('data_section_id', 0);
     newTask.style.display = 'block';
   }
-  else{
+  else {
     newTask.setAttribute('data_section_id', sectionId);
   }
   console.log(newTask);
@@ -405,7 +405,7 @@ function drawTaskBody(taskId, sectionId, projectId, section, taskTitle, taskStat
   newTask.querySelector('#btnStatus_' + taskId).style.backgroundColor = setTaskStatus(statusId.toString());
 
   newTask.querySelector('#viewTaskOpen').id = 'viewTaskOpen_' + taskId;
-  newTask.querySelector('#viewTaskOpen_'+taskId).setAttribute('data_task_id', taskId);
+  newTask.querySelector('#viewTaskOpen_' + taskId).setAttribute('data_task_id', taskId);
   newTask.querySelector('#viewTaskOpen_' + taskId).addEventListener('click', loadTaskDetails);
 
   newTask.id = 'cardDefault_' + taskId;
@@ -422,7 +422,6 @@ function drawTaskBody(taskId, sectionId, projectId, section, taskTitle, taskStat
   var parent = sibling.parenNode;
 
   sibling.parentNode.insertBefore(newTask, sibling.nextSibling.nextSibling.nextSibling);
-
 };
 
 function redirectToProject() {
@@ -454,21 +453,21 @@ function redirectToProject() {
   var url = BASE_URL + '/sections';
 
   var reqObj = {
-    projectId: projectId,
+    projectId: projectId
   };
   var _document = document;
   var _this = this;
 
   callAjax('POST', url, headerConfig, reqObj, function (data) {
 
-    if(data.data.length == 0 ){
-      clonePrimarySection(projectId, _document);
-      addDefaultSectionToDB(_this,_document);
+    if (data.data.length == 0) {
+      clonePrimarySection(projectId, _document, sectionId);
+      addDefaultSectionToDB(_this, _document);
       _document.getElementById('sectionDefault').querySelector('#newTaskOpen').style.display = 'none';
       _document.getElementById('sectionDefault').style.backgroundColor = '#868282';
     }
     else {
-      if(_document.getElementById('sectionDefault') == undefined ){
+      if (_document.getElementById('sectionDefault') == undefined) {
         clonePrimarySection(projectId, _document, sectionId);
         addDefaultSectionToDB(_this, _document);
 
@@ -483,7 +482,7 @@ function redirectToProject() {
         var len = data.data.length - 1;
         //while(item.sectionId == )
         if (i > 0 && item.sectionId == data.data[i - 1].sectionId) {
-            drawTaskBody(item.taskId, item.sectionId, projectId, item.section, item.task, item.status, item.statusId, item.description, _document);
+          drawTaskBody(item.taskId, item.sectionId, projectId, item.section, item.task, item.status, item.statusId, item.description, _document);
         }
         else {
           drawSectionBody(item.sectionId, projectId, item.section, _document);
@@ -497,42 +496,42 @@ function redirectToProject() {
 function clonePrimarySection(projectId, _document, sectionId) {
 
   //new
-    if(!sectionId) {
-      sectionId = 0;
-    }
-    var defaultClone = _document.createElement('div');
-    defaultClone = _document.getElementById('sectionDefaultPrim').cloneNode(true);
-    _document.getElementById('project_board_'+projectId).appendChild(defaultClone);
+  if (!sectionId) {
+    sectionId = 0;
+  }
+  var defaultClone = _document.createElement('div');
+  defaultClone = _document.getElementById('sectionDefaultPrim').cloneNode(true);
+  _document.getElementById('project_board_' + projectId).appendChild(defaultClone);
 
-    defaultClone.style.display = 'block';
-    defaultClone.id = 'sectionDefault';
-    //rename ids in the section cloned
-    defaultClone.querySelector('#tasksPrim').id = 'tasks';
-    defaultClone.querySelector('#section_headPrim').id = 'section_head';
-    defaultClone.querySelector('#cardDefaultPrim').id = 'cardDefault';
-    defaultClone.querySelector('#taskTitlePrim').id = 'taskTitle';
-    defaultClone.querySelector('#btnStatusPrim').id = 'btnStatus';
-    defaultClone.querySelector('#taskDescriptionPrim').id = 'taskDescription';
-    defaultClone.querySelector('#viewTaskOpenPrim').id = 'viewTaskOpen';
-    defaultClone.querySelector('#newTaskOpenPrim').id = 'newTaskOpen';
-    defaultClone.querySelector('#newSectionPrim').id = 'newSection';
-    defaultClone.querySelector('#newSectionTitlePrim').id = 'newSectionTitle';
-    defaultClone.querySelector('#addSectionPrim').id = 'addSection';
-    defaultClone.querySelector('#alertCreateSectionPrim').id = 'alertCreateSection';
-//end rename
+  defaultClone.style.display = 'block';
+  defaultClone.id = 'sectionDefault';
+  //rename ids in the section cloned
+  defaultClone.querySelector('#tasksPrim').id = 'tasks';
+  defaultClone.querySelector('#section_headPrim').id = 'section_head';
+  defaultClone.querySelector('#cardDefaultPrim').id = 'cardDefault';
+  defaultClone.querySelector('#taskTitlePrim').id = 'taskTitle';
+  defaultClone.querySelector('#btnStatusPrim').id = 'btnStatus';
+  defaultClone.querySelector('#taskDescriptionPrim').id = 'taskDescription';
+  defaultClone.querySelector('#viewTaskOpenPrim').id = 'viewTaskOpen';
+  defaultClone.querySelector('#newTaskOpenPrim').id = 'newTaskOpen';
+  defaultClone.querySelector('#newSectionPrim').id = 'newSection';
+  defaultClone.querySelector('#newSectionTitlePrim').id = 'newSectionTitle';
+  defaultClone.querySelector('#addSectionPrim').id = 'addSection';
+  defaultClone.querySelector('#alertCreateSectionPrim').id = 'alertCreateSection';
+  //end rename
 
-    defaultClone.querySelector('#cardDefault').style.display = 'none';
-    defaultClone.querySelector('#cardDefault').setAttribute('data_project_id', projectId);
-    defaultClone.querySelector('#cardDefault').setAttribute('data_section_id', sectionId);
-    defaultClone.setAttribute('data_project_id', projectId);
+  defaultClone.querySelector('#cardDefault').style.display = 'none';
+  defaultClone.querySelector('#cardDefault').setAttribute('data_project_id', projectId);
+  defaultClone.querySelector('#cardDefault').setAttribute('data_section_id', sectionId);
+  defaultClone.setAttribute('data_project_id', projectId);
   //  defaultClone.querySelector('#newSection').id = 'newSection_0';
-    defaultClone.querySelector('#newSection').setAttribute('data_section_id',sectionId);
-    defaultClone.querySelector('#newSection').setAttribute('data_project_id', projectId);
+  defaultClone.querySelector('#newSection').setAttribute('data_section_id', sectionId);
+  defaultClone.querySelector('#newSection').setAttribute('data_project_id', projectId);
   //  defaultClone.querySelector('#newTaskOpen').id = 'newTaskOpen_0';
-    //defaultClone.querySelector('newTaskOpen').addEventListener('click');
+  //defaultClone.querySelector('newTaskOpen').addEventListener('click');
   //new end
 
-//add eventListeners
+  //add eventListeners
   defaultClone.querySelector('#newSection').addEventListener('click', newSectionClick);
   defaultClone.querySelector('#addSection').addEventListener('click', addNewSection);
   defaultClone.querySelector('#newTaskOpen').addEventListener('click', saveProjectSectionId);
@@ -540,6 +539,9 @@ function clonePrimarySection(projectId, _document, sectionId) {
   //end listeners
   _document.getElementById('sectionDefault').querySelector('#cardDefault').style.display = 'none';
 };
+
+document.getElementById('addChanges').addEventListener('click', insertTaskChanges);
+document.getElementById('btnTaskMove').addEventListener('click', loadSectionCollection);
 
 function renameDefaultPrimarySection(defaultClone) {
 
@@ -569,14 +571,12 @@ function saveProjectSectionId() {
 };
 
 
-function addResponsible() {
+function addResponsible(projectId) {
+
+  document.getElementById('task').setAttribute('contentEditable', true);
+  document.getElementById('description').setAttribute('contentEditable', true);
 
   var selectChangeResponsible = document.getElementById('responsibleUserChange');
-  var projectId = this.getAttribute('data_project_id');
-  var span = document.getElementById('respInsert');
-  span.innerHTML =   '<select class="form-group" name="responsible" id="responsibleUserChange">'
-  console.log(span)
-
   var headerConfig = {
     "Content-type": "application/json",
     "Authorization": "Bearer " + localStorage.getItem('token')
@@ -586,35 +586,194 @@ function addResponsible() {
   var reqObj = {
     projectId: projectId
   };
-
+  var _document = document;
   callAjax('POST', url, headerConfig, reqObj, function (data) {
 
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < data.data.lentgh; i++) {
-      // var text = data.data[i].firstName + ' ' + data.data[i].lastName;
-      // var value = data.data[i].user_id;
-      // selectResponsible.options[selectResponsible.options.length] = new Option(text, value);
+    var fragment = _document.createDocumentFragment();
+    console.log('In add responsible')
+    console.log(data.data);
+    for (var i = 0; i < data.data.length; i++) {
 
       var option = _document.createElement('option');
-      option.value = data.data[i].user_id;
+      option.value = data.data[i].userId;
       option.innerHTML = data.data[i].firstName + ' ' + data.data[i].lastName;
       fragment.append(option);
 
-    //   span += '<option value="'+ data.data[i].user_id+'">'+data.data[i].firstName + ' ' + data.data[i].lastName+'</option>';
-    //   console.log(span);
-    // //  console.log(option);
-    //   console.log(data.data[i].firstName);
     }
-  //  span +=  '</select>';
     selectChangeResponsible.appendChild(fragment);
   });
+  // var urlStatus = BASE_URL + '/task/status';
+};
+
+function loadSectionCollection() {
+
+  document.getElementById('btnSecMove').style.display = 'block';
+  var projectId = this.getAttribute('data_project_id');
+  var headerConfig = {
+    "Content-type": "application/json",
+  };
+  var url = BASE_URL + '/project/sections';
+
+  var reqObj = {
+    projectId: projectId
+  };
+  var _document = document;
+  var _this = this;
+
+  callAjax('POST', url, headerConfig, reqObj, function (data) {
+
+    if (data.data.length > 0) {
+      console.log(data.data)
+      var fragment = _document.createDocumentFragment();
+      for (var i = 0; i < data.data.length; i++) {
+
+        var item = data.data[i];
+        var option = _document.createElement('option');
+        option.value = item.id;
+        option.text = item.section;
+        fragment.appendChild(option);
+      }
+      _document.getElementById('btnSecMove').appendChild(fragment);
+    }
+  });
+};
+
+//drag and drop
+function allowDrop(ev) {
+  ev.preventDefault();
+};
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+};
+
+function drop(ev) {
+
+  ev.preventDefault();
+  var oldSectionId = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(oldSectionId));
+  var taskId = this.getAttribute('data_task_id');
+
+  var headerConfig = {
+    "Content-type": "application/json",
+    "Authorization": "Bearer " + localStorage.getItem('token')
+  };
+  var url = BASE_URL + '/section/move';
+
+  var reqObj = {
+    taskId: taskId,
+    sectionId: newSectionId
+  };
+  console.log(this)
+  var _document = document;
+  var _this = this;
+  var alert = document.getElementById('alertUpdateTask');
+
+  projectId = obj.getAttribute('data_project_id');
+  section = document.getElementById('section_id_' + sectionId).innerText;
+
+  callAjax('POST', url, headerConfig, reqObj, function (data) {
+    if (data.status == 200)
+      alertMessage(alert, data.message);
+  });
+};
+//end drag and drop
+
+function moveToSection() {
+
+  var newSectionId = this.value;
+  var section = document.getElementById('section_head_'+ this.getAttribute('data_section_id')).innerText;
+  var taskId = this.getAttribute('data_task_id'),
+    projectId = this.getAttribute('data_project_id'),
+    statusId = document.getElementById('changeStatus').value,
+    taskStatus = document.getElementById('btnTaskStatus').innerText,
+    taskTitle = document.getElementById('task').innerText,
+    taskDescription = document.getElementById('description').innerText;
+  var oldTask = document.getElementById('cardDefault_'+taskId);
+  var _document = document;
+  var _this = this;
+  var alert = document.getElementById('alertUpdateTask');
+
+
+  var headerConfig = {
+    "Content-type": "application/json",
+    "Authorization": "Bearer " + localStorage.getItem('token')
+  };
+  var url = BASE_URL + '/section/move';
+
+  var reqObj = {
+    taskId: taskId,
+    sectionId: newSectionId
+  };
+  console.log(reqObj)
+
+  projectId = this.getAttribute('data_project_id');
+  section = document.getElementById('changeStatus').value;
+
+  callAjax('POST', url, headerConfig, reqObj, function (data) {
+    if (data.status == 200)
+      alertMessage(alert, data.message);
+  });
+  oldTask.parentNode.removeChild(oldTask);
+  drawTaskBody(taskId, newSectionId, projectId, section, taskTitle, taskStatus, statusId, taskDescription, _document);
+};
+
+function getTaskInfo(obj) {
+  return task = {
+    taskId: obj.getAttribute('data_task_id'),
+    sectionId: obj.getAttribute('data_section_id'),
+    projectId: obj.getAttribute('data_project_id'),
+    section: document.getElementById('section_id_' + sec)
+  }
+}
+
+function insertTaskChanges() {
+
+  var headerConfig = {
+    "Content-type": "application/json",
+    "Authorization": "Bearer " + localStorage.getItem('token')
+  };
+  var url = BASE_URL + '/task/update';
+  var task = (document.getElementById('task').innerText != '') ? escapeString(document.getElementById('task').innerText) : null;
+  var description = (document.getElementById('description').innerText != '') ? escapeString(document.getElementById('description').innerText) : null;
+  var taskId = this.getAttribute('data_task_id');
+
+  var reqObj = {
+    section_id: this.getAttribute('data_secton_id'),
+    project_id: this.getAttribute('data_project_id'),
+    id: taskId,
+    task: task,
+    description: description,
+    due_date: document.getElementById('newDueDate').value,
+    status_id: document.getElementById('changeStatus').value
+  };
+
+  var alert = document.getElementById('alertUpdateTask');
+  callAjax('POST', url, headerConfig, reqObj, function (data) {
+    if (data.status == 200) {
+      alertMessage(alert, data.message);
+    }
+  });
+  loadTaskData(taskId);
 };
 
 function loadTaskDetails() {
 
+
   var taskId = this.getAttribute('data_task_id');
   var sectionId = this.getAttribute('data_section_id');
   var projectId = this.getAttribute('data_project_id');
+
+  document.getElementById('btnTaskMove').setAttribute('data_section_id', sectionId);
+  document.getElementById('btnTaskMove').setAttribute('data_task_id', taskId);
+  document.getElementById('btnTaskMove').setAttribute('data_project_id', projectId);
+
+  document.getElementById('btnSecMove').setAttribute('data_section_id', sectionId);
+  document.getElementById('btnSecMove').setAttribute('data_task_id', taskId);
+  document.getElementById('btnSecMove').setAttribute('data_project_id', projectId);
+  document.getElementById('btnSecMove').addEventListener('change', moveToSection);
+
+
   var _document = document;
   var headerConfig = {
     "Content-type": "application/json",
@@ -622,8 +781,52 @@ function loadTaskDetails() {
   var url = BASE_URL + '/task/details';
 
   var reqObj = {
-  //  sectionId: sectionId,
-  //  projectId: projectId,
+    //  sectionId: sectionId,
+    //  projectId: projectId,
+    taskId: taskId
+  };
+
+  callAjax('POST', url, headerConfig, reqObj, function (data) {
+
+    console.log(data);
+    if (data) {
+      var data = data.data;
+      _document.getElementById('task').innerText = data.task;
+      _document.getElementById('description').innerText = data.description;
+      _document.getElementById('dueDate').innerText = data.due_date.split('T')[0];
+      _document.getElementById('responsible').innerText = data.first_name + " " + data.last_name;
+      _document.getElementById('btnTaskStatus').innerText = data.status;
+      _document.getElementById('btnTaskStatus').style.backgroundColor = setTaskStatus(data.status_id.toString());
+      _document.getElementById('newDueDate').value = data.due_date.split('T')[0];
+      _document.getElementById('changeStatus').value = data.status_id;
+    }
+  });
+
+  _document.querySelector('#addChanges').id = 'addChanges_' + taskId;
+  _document.querySelector('#addChanges_' + taskId).setAttribute('data_project_id', projectId);
+  _document.querySelector('#addChanges_' + taskId).setAttribute('data_task_id', taskId);
+
+  _document.querySelector('#editTask').id = 'editTask_' + taskId;
+  _document.querySelector('#editTask_' + taskId).setAttribute('data_project_id', projectId);
+  _document.querySelector('#editTask_' + taskId).addEventListener('click', function () {
+    var edit = document.getElementById('editTask_' + taskId);
+    console.log('edit'); console.log(edit);
+    var projectId = edit.getAttribute('data_project_id');
+    addResponsible(projectId);
+  });
+};
+
+function loadTaskData(taskId) {
+
+  var _document = document;
+  var headerConfig = {
+    "Content-type": "application/json",
+  };
+  var url = BASE_URL + '/task/details';
+
+  var reqObj = {
+    //  sectionId: sectionId,
+    //  projectId: projectId,
     taskId: taskId
   };
 
@@ -631,30 +834,25 @@ function loadTaskDetails() {
     console.log('In task');
 
     console.log(data);
-    if(data) {
+    if (data) {
       var data = data.data;
       _document.getElementById('task').innerText = data.task;
       _document.getElementById('description').innerText = data.description;
       _document.getElementById('dueDate').innerText = data.due_date.split('T')[0];
-      _document.getElementById('responsible').innerText = data.first_name+" "+data.last_name;
+      _document.getElementById('responsible').innerText = data.first_name + " " + data.last_name;
       _document.getElementById('btnTaskStatus').innerText = data.status;
       _document.getElementById('btnTaskStatus').style.backgroundColor = setTaskStatus(data.status_id.toString());
     }
   });
-
-  _document.querySelector('#editTask').id = 'editTask_'+taskId;
-  _document.querySelector('#editTask_'+taskId).setAttribute('data_project_id', projectId);
-//  _document.querySelector('editTask_'+taskId).addEventListener('click', addResponsible);
-  // TO DO load task data
 };
 
 function removeSectionCollection() {
 
   var node = document.getElementsByClassName('projectBoard')[0];
-    while( node.childNodes.length > 2) {
-      node.removeChild(node.lastChild);
-    }
-    document.getElementById('project_title_head').style.display ='none';
+  while (node.childNodes.length > 2) {
+    node.removeChild(node.lastChild);
+  }
+  document.getElementById('project_title_head').style.display = 'none';
 };
 
 function addDefaultSectionToDB(_this, _document) {
@@ -671,7 +869,7 @@ function addDefaultSectionToDB(_this, _document) {
   };
 
   callAjax('POST', url, headerConfig, reqObj, function (data) {
-    clonePrimarySection(reqObj.projectId,_document, data.data);
+    clonePrimarySection(reqObj.projectId, _document, data.data);
     drawSectionBody(data.data, reqObj.projectId, reqObj.section, _document);
   });
 };

@@ -107,8 +107,8 @@ document.getElementById('editTask').addEventListener('click', function(){
 
     document.getElementById('editTaskArea').style.display = 'block';
     var projectId = this.getAttribute('data_project_id');
-    var selectChangeResponsible = _document.getElementById('responsibleUserChange');
+    var selectChangeResponsible = document.getElementById('responsibleUserChange');
     console.log(selectChangeResponsible);
 
-    addResponsible(projectId, _document, selectChangeResponsible);
+    addResponsible(projectId, document, selectChangeResponsible);
 });
