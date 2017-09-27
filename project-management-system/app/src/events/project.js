@@ -1,3 +1,4 @@
+var socket = io();
 document.getElementById('saveTask').addEventListener('click', addNewTask);
 
 document.getElementById('taskTitleInput').addEventListener('change', fieldValidate);
@@ -111,4 +112,18 @@ document.getElementById('editTask').addEventListener('click', function(){
     console.log(selectChangeResponsible);
 
     addResponsible(projectId, document, selectChangeResponsible);
+});
+
+document.getElementById('sendComment').addEventListener('click', function(){
+  var message = document.getElementById('comment').value;
+  socket.emit('chat message', message);
+});
+socket.on('chat message', function(msg){
+var chatForm = document.getElementById('chat');
+var cloneChat = document.createElement('div');
+cloneChat = chatForm.cloneNode();
+cloneChat.querySelector('label').innerText = 'Commented by: user';
+cloneChat.querySelector('input').innerText = msg;
+document.getElementById('chat').appendChild(cloneChat);
+
 });

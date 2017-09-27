@@ -8,6 +8,9 @@ var path = require('path');
 var jwt = require('jsonwebtoken');
 var bodyParser = require('body-parser');
 var passwordHash = require('password-hash');
+var io = require('socket.io')(http);
+var port = process.env.PORT || 8000;
+
 //var hashedPassword = passwordHash.generate('password123');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -61,6 +64,16 @@ app.get('/help', function (req, res) {
 
 // routes for view navigation end
 
+//begin socket
+io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+      io.emit('chat message', msg);
+  });
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+//end socket
 //begin routes for dbRequests
 //working
 app.post('/register', function (req, res) {
