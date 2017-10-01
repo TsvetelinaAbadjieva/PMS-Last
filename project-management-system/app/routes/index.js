@@ -9,7 +9,7 @@ var jwt = require('jsonwebtoken');
 var bodyParser = require('body-parser');
 var passwordHash = require('password-hash');
 var io = require('socket.io')(http);
-var port = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000;
 
 //var hashedPassword = passwordHash.generate('password123');
 
@@ -52,7 +52,10 @@ app.get('/logout', function (req, res) {
 
   res.sendFile(path.resolve(__dirname + '/../src/events/logout.js'));
 });
+app.get('/canvas', function (req, res) {
 
+  res.sendFile(path.resolve(__dirname + '/../src/events/canvas.js'));
+});
 app.get('/style', function (req, res) {
 
   res.sendFile(path.resolve(__dirname + '/../public/styles/styles.css'));
@@ -62,18 +65,31 @@ app.get('/help', function (req, res) {
   res.sendFile(path.resolve(__dirname + '/../src/functions/helpFunctions.js'));
 });
 
+// app.get('/socket', function (req, res) {
+
+//   res.send(path.resolve('https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js'));
+// });
+
 // routes for view navigation end
 
 //begin socket
-io.on('connection', function(socket){
-    socket.on('chat message', function(msg){
-      io.emit('chat message', msg);
-  });
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
+// io.on('connection', function(socket){
+//     socket.on('chat message', function(msg){
+//       io.emit('chat message', msg);
+//   });
+//   socket.on('disconnect', function(){
+//     console.log('user disconnected');
+//   });
+// });
+
+io.on('connection', function (socket) {
+  socket.on('message', function (msg) {
+    var message = JSON.parse(msg);
+    io.emit('message', msg);
   });
 });
 //end socket
+
 //begin routes for dbRequests
 //working
 app.post('/register', function (req, res) {
@@ -189,7 +205,7 @@ app.post('/task', ensureToken, function (req, res, next) {
     }
     if (data[0].id > 0) {
       fc.insertTaskUser(task.userId, data[0].id);
-        res.json({ status: 200, message: 'Task inserted into Database', data: data[0].id })
+      res.json({ status: 200, message: 'Task inserted into Database', data: data[0].id })
     }
     else {
       res.json({ status: 400, message: 'Something went wrong' })
@@ -239,9 +255,9 @@ app.post('/project/users', ensureToken, function (req, res, next) {
       res.message('Operation Impossible!')
     }
   });
-//  var decodedToken = jwt.decode(req.token);
-//  console.log(decodedToken);
-//req.body.projectId = 2;
+  //  var decodedToken = jwt.decode(req.token);
+  //  console.log(decodedToken);
+  //req.body.projectId = 2;
   fc.getUserByProjectCollection(req.body.projectId, function (error, data) {
     if (error) {
       res.json({ status: 400, message: 'Data could not be retrieved' })
@@ -253,7 +269,7 @@ app.post('/project/users', ensureToken, function (req, res, next) {
 });
 
 //get sections for project
-app.post('/project/sections',  function (req, res) {
+app.post('/project/sections', function (req, res) {
   console.log('In request');
 
   fc.getSectionCollectionByProject(res, req.body.projectId, function (res, error, data) {
@@ -267,7 +283,7 @@ app.post('/project/sections',  function (req, res) {
 });
 
 
-app.post('/task/details',  function (req, res) {
+app.post('/task/details', function (req, res) {
   var task = {
     taskId: req.body.taskId,
   };
@@ -300,6 +316,44 @@ app.post('/task/update', ensureToken, function (req, res, next) {
     res.json({ status: 200, message: 'Data updated!' });
   });
 });
+
+//insert comments
+app.post('/task/comment', ensureToken, function (req, res, next) {
+
+  jwt.verify(req.token, 'someSecretKey', function (err, req) {
+    if (err) {
+      res.sendStatus(403);
+      res.message('Operation Impossible!')
+    }
+  });
+
+  var comment = {
+    userId:    jwt.decode(req.token),
+    projectId: req.body.projectId,
+    taskId:    req.body.taskId,
+    comment:   req.body.comment
+  };
+console.log(comment);
+  fc.insertComment(res, comment, function (res, error, result) {
+    if (error) {
+      res.json({ status: 400, message: 'Data could not be retrieved' })
+    }
+
+    res.json({ status: 200, message: 'Comment added!' });
+  });
+});
+
+app.post('/task/comments', function (req, res) {
+
+  fc.getCommentCollection(res, req.body.taskId, function (res, error, result) {
+    if (error) {
+      res.json({ status: 400, message: 'Data could not be retrieved' })
+    }
+
+    res.json({ status: 200, message: 'Comments loaded!', data:result });
+  });
+});
+
 
 // move task from one section to another
 app.post('/section/move', ensureToken, function (req, res, next) {
@@ -455,7 +509,7 @@ app.get('/', function (req, res) {
   data['Data'] = 'welcome';
   res.json(data);
 });
-
+*/
 //module.exports = function(app) {
 
 
@@ -537,9 +591,8 @@ app.get('/user/:id', function (req, res) {
 });
 
 
-*/
 
 module.exports = app;
-app.listen(8000, function () {
-  console.log('PMS app listening on port 8000!')
+http.listen(8000, function () {
+  console.log('PMS app listening on port '+ PORT)
 });

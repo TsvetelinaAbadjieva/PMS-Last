@@ -5,6 +5,7 @@ var newTaskBtn = null;
 var projectDashboardLinkClicked = false;
 var newTaskOpenBtn = '';
 var defaultSection = false;
+var socket = io.connect(BASE_URL);
 
 document.getElementById('projectDashboardLink').addEventListener('click', function () {
 
@@ -406,6 +407,8 @@ function drawTaskBody(taskId, sectionId, projectId, section, taskTitle, taskStat
 
   newTask.querySelector('#viewTaskOpen').id = 'viewTaskOpen_' + taskId;
   newTask.querySelector('#viewTaskOpen_' + taskId).setAttribute('data_task_id', taskId);
+  newTask.querySelector('#viewTaskOpen_'+taskId).setAttribute('data_task_id', taskId);
+
   newTask.querySelector('#viewTaskOpen_' + taskId).addEventListener('click', loadTaskDetails);
 
   newTask.id = 'cardDefault_' + taskId;
@@ -682,14 +685,14 @@ function drop(ev) {
 function moveToSection() {
 
   var newSectionId = this.value;
-  var section = document.getElementById('section_head_'+ this.getAttribute('data_section_id')).innerText;
+  var section = document.getElementById('section_head_' + this.getAttribute('data_section_id')).innerText;
   var taskId = this.getAttribute('data_task_id'),
     projectId = this.getAttribute('data_project_id'),
     statusId = document.getElementById('changeStatus').value,
     taskStatus = document.getElementById('btnTaskStatus').innerText,
     taskTitle = document.getElementById('task').innerText,
     taskDescription = document.getElementById('description').innerText;
-  var oldTask = document.getElementById('cardDefault_'+taskId);
+  var oldTask = document.getElementById('cardDefault_' + taskId);
   var _document = document;
   var _this = this;
   var alert = document.getElementById('alertUpdateTask');
@@ -745,7 +748,8 @@ function insertTaskChanges() {
     task: task,
     description: description,
     due_date: document.getElementById('newDueDate').value,
-    status_id: document.getElementById('changeStatus').value
+    status_id: document.getElementById('changeStatus').value,
+    user_id: document.getElementById('responsibleUserChange').value
   };
 
   var alert = document.getElementById('alertUpdateTask');
@@ -759,8 +763,8 @@ function insertTaskChanges() {
 
 function loadTaskDetails() {
 
-
   var taskId = this.getAttribute('data_task_id');
+  console.log('task='); console.log(this)
   var sectionId = this.getAttribute('data_section_id');
   var projectId = this.getAttribute('data_project_id');
 
@@ -773,6 +777,9 @@ function loadTaskDetails() {
   document.getElementById('btnSecMove').setAttribute('data_project_id', projectId);
   document.getElementById('btnSecMove').addEventListener('change', moveToSection);
 
+  document.getElementById('sendTaskComment').setAttribute('data_section_id', sectionId);
+  document.getElementById('sendTaskComment').setAttribute('data_task_id', taskId);
+  document.getElementById('sendTaskComment').setAttribute('data_project_id', projectId);
 
   var _document = document;
   var headerConfig = {
@@ -781,8 +788,6 @@ function loadTaskDetails() {
   var url = BASE_URL + '/task/details';
 
   var reqObj = {
-    //  sectionId: sectionId,
-    //  projectId: projectId,
     taskId: taskId
   };
 
@@ -795,6 +800,7 @@ function loadTaskDetails() {
       _document.getElementById('description').innerText = data.description;
       _document.getElementById('dueDate').innerText = data.due_date.split('T')[0];
       _document.getElementById('responsible').innerText = data.first_name + " " + data.last_name;
+      _document.getElementById('responsibleUserChange').value = data.userId;
       _document.getElementById('btnTaskStatus').innerText = data.status;
       _document.getElementById('btnTaskStatus').style.backgroundColor = setTaskStatus(data.status_id.toString());
       _document.getElementById('newDueDate').value = data.due_date.split('T')[0];
@@ -802,18 +808,55 @@ function loadTaskDetails() {
     }
   });
 
-  _document.querySelector('#addChanges').id = 'addChanges_' + taskId;
-  _document.querySelector('#addChanges_' + taskId).setAttribute('data_project_id', projectId);
-  _document.querySelector('#addChanges_' + taskId).setAttribute('data_task_id', taskId);
+  if(_document.querySelector('#addChanges')) {
+    _document.querySelector('#addChanges').id = 'addChanges_' + taskId;
+    _document.querySelector('#addChanges_' + taskId).setAttribute('data_project_id', projectId);
+    _document.querySelector('#addChanges_' + taskId).setAttribute('data_task_id', taskId);
+  }
 
-  _document.querySelector('#editTask').id = 'editTask_' + taskId;
-  _document.querySelector('#editTask_' + taskId).setAttribute('data_project_id', projectId);
-  _document.querySelector('#editTask_' + taskId).addEventListener('click', function () {
-    var edit = document.getElementById('editTask_' + taskId);
-    console.log('edit'); console.log(edit);
-    var projectId = edit.getAttribute('data_project_id');
-    addResponsible(projectId);
+  if(_document.querySelector('#editTask')) {
+    _document.querySelector('#editTask').id = 'editTask_' + taskId;
+    _document.querySelector('#editTask_' + taskId).setAttribute('data_project_id', projectId);
+    _document.querySelector('#editTask_' + taskId).addEventListener('click', function () {
+      var edit = document.getElementById('editTask_' + taskId);
+      var projectId = edit.getAttribute('data_project_id');
+      addResponsible(projectId);
+    });
+  }
+  var node = document.getElementById('allTaskComments');
+  console.log(node.childNodes)
+  while (node.childNodes.length > 2) {
+    node.removeChild(node.lastChild);
+  }
+
+  var urlComment = BASE_URL + '/task/comments';
+
+  callAjax('POST', urlComment, headerConfig, reqObj, function (data) {
+    if(data.data.length > 0) {
+      for(var i =0; i < data.data.length; i++) {
+        loadCommentCollection(data.data[i]);
+      }
+    }
   });
+};
+
+function loadCommentCollection(data) {
+
+  var chatForm = document.getElementById('taskCommentsPrim');
+  var cloneChat = document.createElement('div');
+  var _document = document;
+
+  cloneChat = chatForm.cloneNode(true);
+  cloneChat.id = 'taskComments';
+  cloneChat.querySelector('#taskCommentByPrim').id = 'taskCommentBy';
+  cloneChat.querySelector('#taskCommentIdPrim').id = 'taskCommentId';
+  console.log(cloneChat)
+  cloneChat.style.display = 'block';
+
+  cloneChat.querySelector('#taskCommentBy').innerText = 'Commented by: ' + data.first_name +" "+data.last_name;
+  cloneChat.querySelector('#taskCommentId').value = data.comment;
+
+  document.getElementById('allTaskComments').appendChild(cloneChat);
 };
 
 function loadTaskData(taskId) {

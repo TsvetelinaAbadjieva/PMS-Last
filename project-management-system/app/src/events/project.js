@@ -1,4 +1,3 @@
-var socket = io();
 document.getElementById('saveTask').addEventListener('click', addNewTask);
 
 document.getElementById('taskTitleInput').addEventListener('change', fieldValidate);
@@ -15,13 +14,13 @@ function addNewTask() {
   var taskTemplate = null;
   var alert = document.getElementById('alertInsertTask');
 
-  if(newTaskOpenBtn == 'newTaskOpen') {
-     taskTemplate = document.getElementById('sectionDefault').querySelector('#cardDefault');
-     taskTemplate.setAttribute('data_project_id', document.getElementById('sectionDefault').getAttribute('data_project_id'));
-     taskTemplate.setAttribute('data_section_id', document.getElementById('sectionDefault').getAttribute('data_section_id'));
-     sectionId = document.getElementById('sectionDefault').getAttribute('data_section_id');
+  if (newTaskOpenBtn == 'newTaskOpen') {
+    taskTemplate = document.getElementById('sectionDefault').querySelector('#cardDefault');
+    taskTemplate.setAttribute('data_project_id', document.getElementById('sectionDefault').getAttribute('data_project_id'));
+    taskTemplate.setAttribute('data_section_id', document.getElementById('sectionDefault').getAttribute('data_section_id'));
+    sectionId = document.getElementById('sectionDefault').getAttribute('data_section_id');
   }
-  else  {
+  else {
     taskTemplate = document.getElementById('section_id_' + sectionId).querySelector('#cardDefault');
   }
 
@@ -60,7 +59,7 @@ function addNewTask() {
         alertMessage(alert, data.message);
         newTask.id = 'taskTitle_' + data.data;
         newTask.setAttribute('data_project_id', projectId);
-        newTask.setAttribute('data_section_id',sectionId);
+        newTask.setAttribute('data_section_id', sectionId);
 
         newTask.querySelector('#taskTitle').id = 'taskTitle_' + data.data;
         newTask.querySelector('#taskTitle_' + data.data).setAttribute('data_task_id', data.data);
@@ -77,7 +76,7 @@ function addNewTask() {
 
         newTask.querySelector('#btnStatus').id = 'btnStatus_' + data.data;
         newTask.querySelector('#btnStatus_' + data.data).setAttribute('data_task_id', data.data);
-       // newTask.querySelector('#btnStatus_' + taskId).style.backgroundColor = 'red';
+        // newTask.querySelector('#btnStatus_' + taskId).style.backgroundColor = 'red';
         newTask.querySelector('#btnStatus_' + data.data).innerHTML = 'TO DO';
 
         newTask.id = 'cardDefault_' + data.data;
@@ -104,26 +103,95 @@ function addNewTask() {
   }
 };
 
-document.getElementById('editTask').addEventListener('click', function(){
+document.getElementById('editTask').addEventListener('click', function () {
 
-    document.getElementById('editTaskArea').style.display = 'block';
-    var projectId = this.getAttribute('data_project_id');
-    var selectChangeResponsible = document.getElementById('responsibleUserChange');
-    console.log(selectChangeResponsible);
+  document.getElementById('editTaskArea').style.display = 'block';
+  var projectId = this.getAttribute('data_project_id');
+  var selectChangeResponsible = document.getElementById('responsibleUserChange');
+  console.log(selectChangeResponsible);
 
-    addResponsible(projectId, document, selectChangeResponsible);
+  addResponsible(projectId, document, selectChangeResponsible);
 });
 
-document.getElementById('sendComment').addEventListener('click', function(){
+document.getElementById('sendTaskComment').addEventListener('click', function () {
+
+  var chatForm = document.getElementById('taskCommentsPrim');
+  var cloneChat = document.createElement('div');
+  var _document = document;
+
+  cloneChat = chatForm.cloneNode(true);
+  cloneChat.id = 'taskComments';
+  cloneChat.querySelector('#taskCommentByPrim').id = 'taskCommentBy';
+  cloneChat.querySelector('#taskCommentIdPrim').id = 'taskCommentId';
+  console.log(cloneChat)
+  cloneChat.style.display = 'block';
+
+  var message = document.getElementById('taskComment').value;
+  var msgObj = {
+    comment: message,
+    taskId: this.getAttribute('data_task_id'),
+    //sectionId: this.getAttribute('data_section_id'),
+    projectId: this.getAttribute('data_project_id')
+  }
+  cloneChat.querySelector('#taskCommentBy').innerText = 'Commented by: ' + localStorage.getItem('user');
+  cloneChat.querySelector('#taskCommentId').value = message;
+
+  document.getElementById('allTaskComments').appendChild(cloneChat);
+  document.getElementById('taskCommentsPrim').style.display = 'none';
+
+  var headerConfig = {
+    "Content-type": "application/json",
+    "Authorization": "Bearer " + localStorage.getItem('token')
+  };
+  var url = BASE_URL + '/task/comment';
+
+  if (message != '') {
+    callAjax('POST', url, headerConfig, msgObj, function (data) {
+      console.log(data.message);
+      _document.getElementById('taskComment').value = '';
+    });
+  }
+});
+
+
+document.getElementById('sendComment').addEventListener('click', function () {
+
   var message = document.getElementById('comment').value;
-  socket.emit('chat message', message);
+  var messageObj = {
+    user: localStorage.getItem('user'),
+    message: message
+  }
+  var messageStr = JSON.stringify(messageObj);
+  socket.emit('message', messageStr);
+  document.getElementById('comment').value = '';
 });
-socket.on('chat message', function(msg){
-var chatForm = document.getElementById('chat');
-var cloneChat = document.createElement('div');
-cloneChat = chatForm.cloneNode();
-cloneChat.querySelector('label').innerText = 'Commented by: user';
-cloneChat.querySelector('input').innerText = msg;
-document.getElementById('chat').appendChild(cloneChat);
+
+// socket.on('chat message', function(msg){
+
+//   this.printMessage(JSON.parse(msg));
+//   var chatForm = document.getElementById('chat');
+//   var cloneChat = document.createElement('div');
+
+//   cloneChat = chatForm.cloneNode();
+//   cloneChat.querySelector('label').innerText = 'Commented by: user';
+//   cloneChat.querySelector('input').innerText = msg;
+//   document.getElementById('chat').appendChild(cloneChat);
+
+// });
+
+socket.on('message', (msg) => {
+
+  var chatForm = document.getElementById('chat');
+  var cloneChat = document.createElement('div');
+
+  cloneChat = chatForm.cloneNode(true);
+  cloneChat.style.display = 'block';
+  var msgObj = JSON.parse(msg);
+  console.log(msg);
+  cloneChat.querySelector('#commentBy').innerText = 'Commented by: ' + msgObj.user;
+  cloneChat.querySelector('#commentId').value = msgObj.message;
+  document.getElementById('allChatComments').appendChild(cloneChat);
+  chatForm.style.display = 'none';
+
 
 });

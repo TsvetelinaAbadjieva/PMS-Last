@@ -15,123 +15,126 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <title>Document</title>
 </head>
 
 <body>
-<div class="body">
-    <!--Begin navbar-->
-    <div class="navbar-wrapper">
-        <div class="container">
+    <div class="body">
+        <!--Begin navbar-->
+        <div class="navbar-wrapper">
+            <div class="container">
 
-            <nav class="navbar navbar-inverse navbar-static-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                            aria-controls="navbar">
+                <nav class="navbar navbar-inverse navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                                aria-controls="navbar">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Project Management System</a>
-                    </div>
-                    <div id="navbar" class="navbar-collapse collapse">
+                            <a class="navbar-brand" href="#">Project Management System</a>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
 
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#registration" id="registrationLink">Regstration</a></li>
-                            <li><a href="#login" id="loginLink">Login</a></li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Project<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li id="projectDashboardLink"><a href="#project-dashboard">Project Dashboard</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li id="myProjectsLink"><a href="#my-projects">My Projects</a></li>
-                                    <!-- <li><a href="#">Something else here</a></li>
+                            <ul class="nav navbar-nav">
+                                <li class="active"><a href="#">Home</a></li>
+                                <li><a href="#registration" id="registrationLink">Regstration</a></li>
+                                <li><a href="#login" id="loginLink">Login</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Project<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li id="projectDashboardLink"><a href="#project-dashboard">Project Dashboard</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li id="myProjectsLink"><a href="#my-projects">My Projects</a></li>
+                                        <!-- <li><a href="#">Something else here</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">Nav header</li>
                                     <li><a href="#">Separated link</a></li>
                                     <li><a href="#">One more separated link</a></li> -->
-                                </ul>
-                            </li>
-                            <li id="chartLink"><a href="#chart">Chart</a></li>
-                            <li id="tasksLink"><a href="#tasks"></a></li>
-                            <li id="logoutLink"><a href="#logout">Logout</a></li>
-                        </ul>
+                                    </ul>
+                                </li>
+                                <li id="chartLink"><a href="#chart">Chart</a></li>
+                                <li id="tasksLink"><a href="#tasks"></a></li>
+                                <li id="chatLink"><a href="#chat" data-toggle="modal" data-target="#chatModal" data-whatever="@mdo">Chat</a></li>
+
+                                <li id="logoutLink"><a href="#logout">Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </nav>
-            <img src="http://www.techware.com.br/wp-content/uploads/2016/07/cloud-1.jpg" alt="" class="imgHomePage" id="imgHomePage"></div>
-    </div>
-    <!--End navbar-->
-    <!--Register form begin-->
-    <div class="container" id="register">
-
-        <form class="form-signin" id="registerForm">
-            <h1>Registration Page</h1>
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <label for="inputFirstName" class="sr-only">First name</label>
-            <input type="text" id="inputFirstNameReg" class="form-control" placeholder="First Name" required autofocus>
-
-            <label for="inputLastNAme" class="sr-only">Last Name</label>
-            <input type="text" id="inputLastNameReg" class="form-control" placeholder="Last Name" required autofocus>
-
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" id="inputEmailReg" class="form-control" placeholder="Email address" required autofocus>
-
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPasswordReg" class="form-control" placeholder="Password" required>
-
-            <p><button class="btn btn-lg btn-primary btn-block" id="btnRegister" type="submit">Sign in</button> </p>
-            <div id="alertRegister" class="alert alert-danger" role="alert">
-                This is a danger alert—check it out!
-            </div>
-        </form>
-
-    </div>
-    <!--Register form end-->
-
-    <!--Login form begin-->
-    <div class="container" id="login">
-
-        <form class="form-signin" id="loginForm">
-            <h1>Login Page</h1>
-            <h2 class="form-signin-heading">Please login</h2>
-
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-
-            <p><button class="btn btn-lg btn-primary btn-block" id="btnLogin" type="submit">Sign in</button></p>
-            <div id="alertLogin" class="alert alert-danger" role="alert">
-                This is a danger alert—check it out!
-            </div>
-        </form>
-
-    </div>
-    <!--Login form end-->
-
-    <!--ProjectBoard start-->
-    <div id="projectDashboard" class="container">
-        <div id="userLoggedIn" class="alert alert-info" role="alert">
-            This is a danger alert—check it out!
+                </nav>
+                <img src="http://www.techware.com.br/wp-content/uploads/2016/07/cloud-1.jpg" alt="" class="imgHomePage" id="imgHomePage"></div>
         </div>
+        <!--End navbar-->
+        <!--Register form begin-->
+        <div class="container" id="register">
 
-        <ul class="list-group" id="projectCollection">
-            <li class="list-group-item">
-                <button type="button" class="btn btn-secondary" id="newProject">Add new Project</button>
-            </li>
+            <form class="form-signin" id="registerForm">
+                <h1>Registration Page</h1>
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <label for="inputFirstName" class="sr-only">First name</label>
+                <input type="text" id="inputFirstNameReg" class="form-control" placeholder="First Name" required autofocus>
 
-            <li class="list-group-item project" id="project" style="display:none">
-                <div class="card border-success mb-3" style="max-width: 60rem;">
-                    <div class="card-header bg-transparent border-info"></div>
-                    <div class="card-body text-success">
-                        <h4 class="card-title" id="projectTitle">Project Name</h4>
-                        <h5><label for="">Start date</label><span id="startDate" style="margin: 15px"></span>
-                            <label for="">Due date</label style="margin: 15px"><span id="endDate"style="margin: 15px"></span>
+                <label for="inputLastNAme" class="sr-only">Last Name</label>
+                <input type="text" id="inputLastNameReg" class="form-control" placeholder="Last Name" required autofocus>
+
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmailReg" class="form-control" placeholder="Email address" required autofocus>
+
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPasswordReg" class="form-control" placeholder="Password" required>
+
+                <p><button class="btn btn-lg btn-primary btn-block" id="btnRegister" type="submit">Sign in</button> </p>
+                <div id="alertRegister" class="alert alert-danger" role="alert">
+                    This is a danger alert—check it out!
+                </div>
+            </form>
+
+        </div>
+        <!--Register form end-->
+
+        <!--Login form begin-->
+        <div class="container" id="login">
+
+            <form class="form-signin" id="loginForm">
+                <h1>Login Page</h1>
+                <h2 class="form-signin-heading">Please login</h2>
+
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+                <p><button class="btn btn-lg btn-primary btn-block" id="btnLogin" type="submit">Sign in</button></p>
+                <div id="alertLogin" class="alert alert-danger" role="alert">
+                    This is a danger alert—check it out!
+                </div>
+            </form>
+
+        </div>
+        <!--Login form end-->
+
+        <!--ProjectBoard start-->
+        <div id="projectDashboard" class="container">
+            <div id="userLoggedIn" class="alert alert-info" role="alert">
+                This is a danger alert—check it out!
+            </div>
+
+            <ul class="list-group" id="projectCollection">
+                <li class="list-group-item">
+                    <button type="button" class="btn btn-secondary" id="newProject">Add new Project</button>
+                </li>
+
+                <li class="list-group-item project" id="project" style="display:none">
+                    <div class="card border-success mb-3" style="max-width: 60rem;">
+                        <div class="card-header bg-transparent border-info"></div>
+                        <div class="card-body text-success">
+                            <h4 class="card-title" id="projectTitle">Project Name</h4>
+                            <h5><label for="">Start date</label><span id="startDate" style="margin: 15px"></span>
+                                <label for="">Due date</label style="margin: 15px"><span id="endDate"style="margin: 15px"></span>
                         </h5>
                         <p class="card-text" id="projectDescription">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <p  class="card-text"><button class="btn btn-secondary" id="assignMe">Assign Me</button></p>
@@ -152,28 +155,28 @@
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Project title</label>
-                            <input type="text" class="form-control" id="projectTitleInput" aria-describedby="emailHelp" placeholder="Project title">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Project description</label>
-                        <input type="text" class="form-control" id="projectDescriptionInput" aria-describedby="emailHelp" placeholder="Project description">
-                        <label for="exampleInputEmail1">Due Date</label>
-                        <input type="date" class="form-control" id="projectDateInput" aria-describedby="emailHelp" placeholder="Due Date">
-                        <div class="card-footer bg-transparent border-success">
-                            <button type="button" class="btn btn-secondary" id="saveProject" style="margin:15px; width:120px;">Save</button>
-                            <button type="button" class="btn btn-secondary" id="closeProject" style="margin:15px; width:120px;">Close</button>
+                                <input type="text" class="form-control" id="projectTitleInput" aria-describedby="emailHelp" placeholder="Project title">
                         </div>
-                        <div id="alertInsertProject" class="alert alert-danger" role="alert">
-                            This is a danger alert—check it out!
-                        </div>
-                    </div>
 
-                    </form>
-                </div>
-    </div>
-    </li>
-    </ul>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Project description</label>
+                            <input type="text" class="form-control" id="projectDescriptionInput" aria-describedby="emailHelp" placeholder="Project description">
+                            <label for="exampleInputEmail1">Due Date</label>
+                            <input type="date" class="form-control" id="projectDateInput" aria-describedby="emailHelp" placeholder="Due Date">
+                            <div class="card-footer bg-transparent border-success">
+                                <button type="button" class="btn btn-secondary" id="saveProject" style="margin:15px; width:120px;">Save</button>
+                                <button type="button" class="btn btn-secondary" id="closeProject" style="margin:15px; width:120px;">Close</button>
+                            </div>
+                            <div id="alertInsertProject" class="alert alert-danger" role="alert">
+                                This is a danger alert—check it out!
+                            </div>
+                        </div>
+
+                        </form>
+                    </div>
+        </div>
+        </li>
+        </ul>
     </div>
     <!--ProjectBoard end-->
 
@@ -195,7 +198,7 @@
                     <li id="cardDefaultPrim" draggable="true" ondragstart="drag(event)">
                         <div class="card" style="width: 20rem;">
                             <div class="card">
-                                <label id="btnStatusPrim"  class="btn  taskStatus" style=" width: 20rem; float:left;">Status</label>
+                                <label id="btnStatusPrim" class="btn  taskStatus" style=" width: 20rem; float:left;">Status</label>
                                 <h4 class="card-title" id="taskTitlePrim" style="width: 20rem;">Special title treatment </h4>
                                 <p class="card-body" id="taskDescriptionPrim" style="width: 20rem;">With supporting text below as a natural lead-in to additional content.</p>
                                 <button type="button" id="viewTaskOpenPrim" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">View Task</button>
@@ -217,14 +220,16 @@
                     </li>
                     <li> <button type="button" id="newSectionPrim" class="btn btn-default large">New Section</button><button type="button"
                             id="newTaskOpenPrim" class="btn btn-primary" data-toggle="modal" data-target="#newTask" data-whatever="@mdo">New Task</button></li>
-                    <li> <input type="text" id="newSectionTitlePrim" class="form-group"><button type="button" id="addSectionPrim" class="btn btn-primary larger"
-                            class="form-group">Add</button></li>
+                    <li> <input type="text" id="newSectionTitlePrim" class="form-group"><button type="button" id="addSectionPrim"
+                            class="btn btn-primary larger" class="form-group">Add</button></li>
                     <li>
                         <div id="alertCreateSectionPrim" class="alert alert-danger" role="alert" style="margin-right: 30px;">
                             This is a danger alert—check it out!
                         </div>
                     </li>
-                    <li><hr style="width: 20rem; float:left;"></li>
+                    <li>
+                        <hr style="width: 20rem; float:left;">
+                    </li>
                 </ul>
             </div>
 
@@ -243,20 +248,20 @@
                     <select for="" id="btnSecMove" name="btnSecMove" class="btn select" style="display:none">Move
                     </select>
                     <h4 class="modal-title" id="description" contenteditable="true">Description</h5>
-                    <label for="">Due date</label>
-                    <h5 id="dueDate">Due date</h5>
-                    <label for="">Responsible</label>
-                    <h5 id="responsible">Responsible</h5>
-                    <div  id="editTaskArea" style="display:none">
-                        <label for="">Attach another responsible to this task</label>
-                        <select class="form-group" name="responsible" id="responsibleUserChange">
+                        <label for="">Due date</label>
+                        <h5 id="dueDate">Due date</h5>
+                        <label for="">Responsible</label>
+                        <h5 id="responsible">Responsible</h5>
+                        <div id="editTaskArea" style="display:none">
+                            <label for="">Attach another responsible to this task</label>
+                            <select class="form-group" name="responsible" id="responsibleUserChange">
                         </select>
                             <button type="button" class="btn btn-primary" id="addChanges">Add</button>
-                        <p>
-                            <label for="">Due date</label>
-                            <input type="date" id="newDueDate">
-                            <label for="">Change Status</label>
-                            <select name="changeStatus" id="changeStatus">
+                            <p>
+                                <label for="">Due date</label>
+                                <input type="date" id="newDueDate">
+                                <label for="">Change Status</label>
+                                <select name="changeStatus" id="changeStatus">
                                 <option value="0">----</option>
                                 <option value="1">TO DO</option>
                                 <option value="2">In Process</option>
@@ -264,8 +269,8 @@
                                 <option value="4">DONE</option>
                                 <option value="5">PENDING</option>
                             </select>
-                        </p>
-                    </div>
+                            </p>
+                        </div>
 
                         <button type="button" id="editTask" class="btn btn-primary">Edit</button>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -275,19 +280,21 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="form-group" id="chat">
-                            <label for="recipient-name" class="form-control-label" style="font-style:oblique">Commented by:</label>
-                            <input type="text" class="form-control" id="commentId" readonly>
+                        <div id="allTaskComments">
+                            <div class="form-group" id="taskCommentsPrim">
+                                <label for="recipient-name" class="form-control-label" style="font-style:oblique" id="taskCommentByPrim">Commented by:</label>
+                                <input type="text" class="form-control" id="taskCommentIdPrim" readonly>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="message-text" class="form-control-label">Comment:</label>
-                            <textarea class="form-control" id="comment"></textarea>
+                            <label for="message-text" class="form-control-label">Your Comment:</label>
+                            <textarea class="form-control" id="taskComment"></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="sendComment" class="btn btn-primary">Send message</button>
+                    <button type="button" id="sendTaskComment" class="btn btn-primary">Send message</button>
                 </div>
             </div>
         </div>
@@ -328,7 +335,6 @@
                     <div id="alertInsertTask" class="alert alert-danger" role="alert" style="margin-right: 30px;">
                         This is a danger alert—check it out!
                     </div>
-
                 </div>
                 </form>
 
@@ -336,9 +342,43 @@
         </div>
     </div>
     <!--Modal for New task end-->
+
+    <!--Modal for chat -->
+    <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <form>
+                      <div id="allChatComments">
+                        <div class="form-group" id="chat">
+                            <label for="recipient-name" class="form-control-label" style="font-style:oblique" id="commentBy">Commented by:</label>
+                            <input type="text" class="form-control" id="commentId" readonly>
+                        </div>
+                      </div>
+                        <div class="form-group">
+                            <label for="message-text" class="form-control-label">Comment:</label>
+                            <textarea class="form-control" id="comment"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="sendComment" class="btn btn-primary">Send message</button>
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>
+    <!--End modal for chat-->
+
+    <div>
+      <canvas id="canvas"></canvas>
+    </div>
+    </div>
     <!--ProjectSections end-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
+
     <script>
         const BASE_URL = "http://localhost:8000";
         const HELP = BASE_URL + "/help";
@@ -348,8 +388,10 @@
         const PROJECT_DASHBOARD = BASE_URL + "/projectDashboard";
         const PROJECT = BASE_URL + "/projectDetails";
         const LOGOUT = BASE_URL + "/logout";
-
+        const CANVAS = BASE_URL+ "/canvas";
+        // const SOCKET = BASE_URL + "/socket"
     </script>
+    <!-- <script src=SOCKET></script>  -->
     <script src=HELP></script>
     <script src=HOME></script>
     <script src=REGISTRATION></script>
@@ -357,7 +399,7 @@
     <script src="http://localhost:8000/projectDashboard"></script>
     <script src="http://localhost:8000/projectDetails"></script>
     <script src=LOGOUT></script>
-
+    <script src=CANVAS></script>
 </body>
 
 </html>

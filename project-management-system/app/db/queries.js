@@ -4,7 +4,7 @@ var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-  //  password: "root",
+    //password: "root",
     database: "project_management_system"
 });
 var passwordHash = require('password-hash');
@@ -60,31 +60,39 @@ exports.insertTaskUser = function(userId, taskId) {
   });
 };
 
-exports.insertComment = function (comment, func) {
+exports.insertComment = function (res, comment, func) {
 
-    var tu = [];
-    //INSERT INTO `user` (`name`) VALUES ('John');
-    var sql = "INSERT INTO comment (user_id, task_id, project_id, comment) VALUES ?";
-    tu.push(comment.user_id);
-    tu.push(comment.task_id);
-    tu.push(comment.project_id);
-    tu.push(comment.comment);
+    var sql = "INSERT INTO comment (user_id, task_id, project_id, comment) VALUES (?, ?, ?, ?)";
 
-    var values = [tu];
-
-    con.query(sql, values, function (err, result) {
+    con.query(sql, [parseInt(comment.userId), parseInt(comment.taskId), parseInt(comment.projectId), comment.comment ], function (err, result) {
         if (err) throw err;
-        console.log("Number of records inserted: " + result.affectedRows);
-        func(err, result.affectedRows);
+            console.log("Number of records inserted: " + result.affectedRows);
+        func(res, err, result.affectedRows);
     });
 };
+exports.getCommentCollection = function (res, taskId, func) {
 
+    var sql = "SELECT user.first_name, user.last_name, comment.comment FROM project_management_system.comment JOIN project_management_system.user ON comment.user_id = user.id  WHERE comment.task_id = ?";
+    var user = [];
+
+        con.query(sql, [parseInt(taskId)], function (err, result) {
+            if (err) throw err;
+            for (var i = 0; i < result.length; i++) {
+                user.push(result[i]);
+            }
+            console.log(result);
+            func(res, err, result);
+        });
+};
 exports.updateTask = function (res, taskObj, func) {
 
     var tu = [];
     for (var key in taskObj) {
       if(taskObj[key] != null && key != 'id') {
         tu.push( {key: key, value: taskObj[key]});
+      }
+      if(key == 'user_id') {
+        key = 'task_user.user_id'
       }
     }
     //INSERT INTO `user` (`name`) VALUES ('John');
@@ -257,7 +265,7 @@ exports.getUserCollection = function (func) {
 exports.getSectionTaskCollection = function (res, projectId, func) {
 
     var sql = "SELECT task.id as taskId, task.project_id as projectId, task.section_id as sectionId, task.status_id as statusId, task.task as task, "+
-    "task.description as description, task.due_date as dueDate, section.section as section, task_status.status as status  FROM project_management_system.task "+
+    "task.description as description, task.start_date as startDate, task.due_date as dueDate, section.section as section, task_status.status as status  FROM project_management_system.task "+
     "JOIN project_management_system.section "+
     "ON section.id = task.section_id "+
     "JOIN project_management_system.task_status "+
@@ -491,7 +499,7 @@ exports.getTaskDetails = function(task, func) {
 
   var values = [task.taskId];
   console.log(task.taskId)
-  var sql = "SELECT task.task, task.description, task.status_id, task.due_date, user.first_name, user.last_name, task_status.status from task "+
+  var sql = "SELECT task.task, task.description, task.status_id, task.user_id as userId, task.due_date, user.first_name, user.last_name, task_status.status from task "+
   " JOIN task_status "+
   " ON task.status_id = task_status.id "+
   " JOIN user "+
